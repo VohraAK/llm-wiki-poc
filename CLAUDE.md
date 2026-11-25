@@ -18,7 +18,9 @@ Full spec: `IMPLEMENTATION_PLAN.md`. Read it before any work.
 ## Status (2026-11-25)
 - Done: Phase 0 (setup), Phase 1 (corpus in `data/md/`, `data/papers.yaml`), Phase 2 (`questions/questions.yaml`, 7 questions), Phase 3 (RAG baseline: `common/`, `rag/`), Phase 4 (wiki: `wiki/`, bundle of 16 papers in `wiki/bundle/`, validates clean), Phase 5 pilot and ethics smoke test.
 - Frozen 2026-11-25 (git tag `frozen`). From here, changes to RAG or the shared prompts go in `NOTES.md` with date and reason.
-- Next: full runs (7 questions x 2 systems x seeds 1, 2 = 28 answers), then Phase 6 judge export, then the update demo.
+- Full runs done (`scripts/full_runs.py`): 28/28 answers in `runs/answers/`, no errors, no log gaps. Judge packets exported (`scripts/export_judge.py` -> `runs/judge_packets.jsonl`, key in `runs/answer_key.csv`; do not re-run without `--force`, ids are tied to scores).
+- Next: Abdullah runs the judge workflow -> `runs/scores.jsonl`. Meanwhile write `scripts/import_scores.py` + `scripts/report.py` (plan section 7), test on fake scores. Then hand spot-check ~6 answers, then Phase 7 demo (update demo on a copy of the bundle at commit `8c739e8`, before nagwekar2025).
+- Known blinding tells, disclosed in NOTES.md: wiki answers longer, some LaTeX, RAG declines more.
 - Bundle repo (`wiki/bundle/`, own git, gitignored here) tag `ethics-v1-dup` holds the pre-slug-fix state. Scripts in `scripts/` (overnight run, pilot, smoke test, status).
 - All plan section 4 decisions settled. None open.
 - Settled: 1 (two domains, 16 papers, confirmed 2026-11-25), 2 (PyMuPDFLoader), 3 (strip references), 4 (top-k 8 chunks), 5 (thinking off, for now), 6 (no extra questions; 7 questions, 28 answers, no decline metric), 7 (no 25th paper; update demo re-ingests an existing paper from bundle git history).

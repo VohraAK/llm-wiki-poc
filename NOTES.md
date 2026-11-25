@@ -82,3 +82,8 @@
 - State at freeze: RAG collection 633 chunks (16 papers). Wiki bundle 17 commits (init + 16 papers), validator 0 errors, 1 expected warning (`AGENTS.md` has no frontmatter). Bundle tag `ethics-v1-dup` is the superseded duplicated-topic state.
 - Pilot (climate) and ethics smoke test (T1, B3) ran on both systems with no errors. 10 sampled footnotes checked against pages: all supported (one cites p.9 for a sentence that starts on p.8).
 - Observed, not fixed (so it is measured): RAG misses on T4 and B2 (retrieval), wiki T2 contradicts itself on timescales, wiki output contains LaTeX, RAG T1 retrieval missed Choquette-Choo.
+
+## 2026-11-25 Full runs and judge export
+- Full runs (`scripts/full_runs.py`, after `frozen`): 28/28 answers, 0 errors, no gaps in `runs/llm_log.jsonl`, 24.9 min. RAG: 3 answers needed the citation-format fix (T2-oae both seeds, B2 seed 2), 5 have no citations (all declines: B3 s2, T3 s1+s2, T4 s1+s2). Wiki: 0 fixes, 0 without citations.
+- `scripts/export_judge.py` wrote 28 blinded packets (`runs/judge_packets.jsonl`) and `runs/answer_key.csv`. Packets carry only answer_id, question, reference_key_points, caveats, answer, cited_pages. Cited pages that are missing in `data/md/`: none.
+- Style tells that remain in the answer text (not edited, disclose as limitation): wiki answers are longer (mean 301 words vs 190), 2 wiki answers contain LaTeX (`$...$`), RAG declines more often ("does not contain" / "documents don't cover this" in 14 RAG vs 8 wiki answers). A blind judge can probably guess the system from some of these.

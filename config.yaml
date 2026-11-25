@@ -1,0 +1,13 @@
+models:
+  chat: qwen3.5:9b
+  embed: embeddinggemma-2:latest
+llm:
+  temperature: 0.2
+  num_ctx: 32768
+  thinking: false
+  seeds: [1, 2]
+rag:
+  top_k: 8
+  chunk_size: 500
+  chunk_overlap: 50
+  chroma_dir: data/chroma

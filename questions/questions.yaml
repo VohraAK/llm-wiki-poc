@@ -1,0 +1,179 @@
+# 7 evaluation questions (plan section 6, Phase 2). Text, tier and expected_favour are copied
+# from rag2compare/experiments/questions.yaml (its `bias` field is `expected_favour` here).
+#
+# reference_key_points were drafted by Claude from data/md/*.md (the same page text both systems see),
+# NOT by a domain expert. Each point carries the paper id and page where the text supports it.
+# Spot-check a few against the PDFs. They are for the judge workflow (Phase 6), never shown to the systems.
+#
+# `caveats` list places where the question's wording does not match the papers. A good answer
+# should not invent support for the question's premise.
+
+questions:
+  - id: T1-mia-evolution
+    tier: chronological
+    expected_favour: neutral
+    domains: [ai-ethics-law]
+    papers: [choquette2021, chow2025, liu2026]
+    text: |
+      How have membership inference attacks against generative-audio models
+      evolved from the 2021 label-only formulation (Choquette-Choo et al.)
+      through the 2025 effectiveness assessments to the 2026 LSA-Probe /
+      manifold-perturbation methodology described by Liu et al.? Treat this
+      as a technical evolution, not a list.
+    reference_key_points:
+      - point: "Choquette-Choo et al. (2021) introduce a label-only attack: infer membership from how robust the model's hard predicted labels are to input perturbations, with no confidence scores. It matches confidence-based attacks."
+        source: [choquette2021-p1]
+      - point: "They show 'confidence masking' defenses are insufficient. Only differential privacy or strong L2 regularization meaningfully reduce leakage. This work is on classifiers and images, not generative audio."
+        source: [choquette2021-p1, choquette2021-p5]
+      - point: "Chow et al. (2025) is a preliminary study of MIAs on generative music (MuseGAN). They find music data fairly resilient: the Monte Carlo single-sample attack gets about 48-51% accuracy, which is essentially random guessing."
+        source: [chow2025-p1, chow2025-p7]
+      - point: "Chow et al. suggest causes: limited overfitting, symbolic music's structural redundancy, and Euclidean distance being a poor similarity measure for music. They call for music-specific metrics."
+        source: [chow2025-p7]
+      - point: "Liu et al. (2026) propose LSA-Probe, a white-box attack on music diffusion models (DiffWave, MusicLDM). It scores membership by the adversarial perturbation budget needed to reach a fixed degradation, instead of a static loss. They describe a shift from single endpoint loss signals to process-based, dynamic signals."
+        source: [liu2026-p1, liu2026-p4]
+      - point: "LSA-Probe improves TPR@1% FPR by 3-8 percentage points over the best baseline (for example DiffWave/MAESTRO 0.12 to 0.20). Absolute gains are modest, and latent diffusion models stay more robust than DDPMs."
+        source: [liu2026-p1, liu2026-p4]
+    caveats:
+      - "Choquette-Choo is not about generative audio. A good answer notes the evolution runs from classifiers, to GAN music (weak results), to diffusion music (modest gains)."
+
+  - id: T2-oae-bio-vs-chemical
+    tier: conflict
+    expected_favour: wiki
+    domains: [climate-science]
+    papers: [he2023, schneider2026]
+    text: |
+      Contrast the He & Tyka (2023) chemical-efficiency model for near-coast
+      OAE with the 2025 Schneider et al. findings on biological influence on
+      air-sea gas exchange. Does biological activity accelerate or
+      decelerate equilibration, and where do the papers actually disagree
+      versus agree on mechanism?
+    reference_key_points:
+      - point: "He & Tyka (2023) is an ocean-model study: 17 pulse injections near coasts. Most locations reach an uptake plateau of 0.6-0.8 mol CO2 per mol alkalinity after 3-4 years. Equilibration varies widely with surface residence time and loss of alkalinity to deeper water."
+        source: [he2023-p1, he2023-p9, he2023-p13]
+      - point: "He & Tyka's carbonate model does not include biological CO2 uptake or calcification. They leave those dependencies to future studies."
+        source: [he2023-p10]
+      - point: "Schneider et al. is a 47-day mesocosm experiment (TA +0-600 umol/kg, Ca- and Si-based minerals). CO2 ingassing reached up to 15 mmol C m-2 d-1. Full (95%) equilibration by air-sea gas exchange for +600 umol/kg is estimated at about 1050 days."
+        source: [schneider2026-p1, schneider2026-p10, schneider2026-p13]
+      - point: "Schneider et al. say their ~1050 d timescale is in line with He & Tyka's 3-4 year plateau. The papers agree on the physical gas-exchange timescale."
+        source: [schneider2026-p10]
+      - point: "Schneider's biological findings concern calcification (optimum curve), net community production (higher in silicate treatments) and zooplankton respiration. They do not claim biology speeds up or slows equilibration."
+        source: [schneider2026-p1, schneider2026-p13]
+    caveats:
+      - "The question assumes the papers conflict on whether biology accelerates or decelerates equilibration. Neither paper says that. A good answer says the papers are largely complementary (model vs mesocosm, physical vs biological) and that the equilibration timescales agree."
+
+  - id: T2-fair-use-vs-optin
+    tier: conflict
+    expected_favour: wiki
+    domains: [ai-ethics-law]
+    papers: [atkinson2025, hutiri2026]
+    text: |
+      How does the "Unfair Learning" argument (Atkinson, 2025) conflict
+      with the "Nuanced Opt-in" proposal (Hutiri & Scheuerman, 2026) on
+      the status of publicly available training data? Identify the
+      specific claim each paper makes and where they are not actually
+      addressing the same question.
+    reference_key_points:
+      - point: "Atkinson's claim: every legal and substantive argument for a fair use exemption for GenAI applies equally (or more) to humans, so GenAI exceptionalism is legally and logically inconsistent. It rejects the claim that GenAI may reproduce copyrighted works without authorization."
+        source: [atkinson2025-p1]
+      - point: "Atkinson says GenAI training data comes overwhelmingly from publicly accessible web pages whose content is largely copyrighted. His analysis covers 'publicly accessible', 'publicly available' and permissively licensed works, so public availability does not grant a fair use right."
+        source: [atkinson2025-p3, atkinson2025-p5]
+      - point: "Hutiri & Scheuerman's claim: one-size-fits-all consent, meaning binary opt-in or opt-out, is insufficient. They propose nuanced, conditional consent verified at inference time (an agent-based architecture), with a music case study."
+        source: [hutiri2026-p1]
+      - point: "Hutiri et al. start from training data being scraped from online sources and creators' consent being ignored. They discuss the shortfalls of opt-out (for example robots.txt directives being ignored). Their focus is consent mechanisms and control, not whether fair use legally applies."
+        source: [hutiri2026-p1, hutiri2026-p2, hutiri2026-p3]
+      - point: "The papers address different questions. Atkinson asks a legal question: is GenAI training on public data fair use? Hutiri asks a governance and design question: how can rights holders express and enforce consent? They are compatible more than directly in conflict."
+        source: [atkinson2025-p1, hutiri2026-p1]
+
+  - id: T3-mia-as-copyright-evidence
+    tier: multi-hop
+    expected_favour: wiki
+    domains: [ai-ethics-law]
+    papers: [ranjan2026, liang2026, stober2026]
+    text: |
+      Propose a forensic workflow that uses the G-Drift gradient-induced
+      feature drift (Ranjan et al., 2026) to detect whether a specific
+      training set was used by a target model, and connect it to the
+      "counterfactual infringement" criterion proposed by Liang & Lut
+      (2026) and the substantial-similarity threshold discussed in
+      Stober & Dornis (2026). Be explicit about which paper supports
+      each step.
+    reference_key_points:
+      - point: "G-Drift (Ranjan et al.) is a white-box, per-example MIA. Apply one gradient-ascent step to a candidate (x, y), measure the drift in logits and hidden activations, and feed those features to a lightweight logistic classifier. Members show smaller and more structured drift than non-members."
+        source: [ranjan2026-p1, ranjan2026-p4]
+      - point: "G-Drift needs white-box access to model parameters and gradients. The paper envisions a company auditing its own model or a regulator inspecting with the owner's cooperation. So a forensic workflow needs model access, for example by court order."
+        source: [ranjan2026-p3]
+      - point: "Liang & Lut's criterion: an output depends essentially on an existing work if it could not have been generated without that work in the training corpus. It is a counterfactual about removing the work from the corpus. The paper does not call it 'counterfactual infringement'."
+        source: [liang2026-p1, liang2026-p3, liang2026-p7]
+      - point: "Stober & Dornis discuss training-data memorization as a source of copyright issues independent of fair use and the TDM exception, with copying and reproduction analysed first. They also stress training-data documentation and provenance."
+        source: [stober2026-p1, stober2026-p2]
+      - point: "A good answer is honest about the gaps. G-Drift shows membership of individual examples, which is not the same as Liang & Lut's essential-dependence test. No paper defines a quantitative substantial-similarity threshold or links MIA results to it."
+        source: [ranjan2026-p1, liang2026-p1]
+    caveats:
+      - "'Substantial-similarity threshold' is not a Stober & Dornis term. Substantial similarity appears as the standard in Liang & Lut's abstract. Stober discusses reproduction, memorization and the 'amount and substantiality' fair-use factor. Credit answers that attribute correctly and flag the mismatch. Penalise answers that cite pages for claims the pages don't make."
+      - "G-Drift is a per-example attack, so extending it to a whole training set is the answerer's own proposal. It must be labelled as such, not attributed to Ranjan."
+
+  - id: T4-eelgrass-mrv-gaps
+    tier: emergence
+    expected_favour: wiki
+    domains: [climate-science]
+    papers: [jones2025, ho2023]
+    text: |
+      Based on Jones et al.'s (2025) study of eelgrass epifauna response
+      to elevated ocean alkalinity and Ho et al.'s (2023) MRV protocols
+      for OAE, identify three potential ecological bottlenecks that
+      current MRV protocols fail to monitor. For each, cite which paper
+      supports the gap.
+    reference_key_points:
+      - point: "Jones et al. found mortality in sea hares (Phyllaplysia taylori) from 37% at pH 7.8 to 100% at pH 9.3, and lower isopod (Idotea resecata) mortality of 13-21%. The species differ in vulnerability. These are species-level toxicity effects."
+        source: [jones2025-p1]
+      - point: "Ho et al. explicitly place ecosystem-impact assessment outside the MRV scope, except where it affects OAE efficiency (for example biogenic calcification). MRV focuses on carbonate chemistry, secondary precipitation, biotic calcification and pCO2/pH. So species-level mortality of benthic invertebrates is a gap."
+        source: [ho2023-p1, ho2023-p2]
+      - point: "Exposure duration and near-field conditions: sea hares and isopods are immobile or have small ranges, so they continuously experience elevated pH in the mixing zone. Jones et al. call for near-field dilution modelling and in situ pH sensing. Ho et al. emphasise far-field pCO2/pH monitoring."
+        source: [jones2025-p12, ho2023-p1]
+      - point: "Food-web and trophic effects: the test species were chosen as salmon prey and for their role in eelgrass ecosystems. Jones et al. call for ecosystem-level mesocosm work and for modelling indirect effects on supported food webs. Ho's recommendations mention only phytoplankton community shifts and export production as tail risks."
+        source: [jones2025-p1, jones2025-p12, ho2023-p9]
+      - point: "Other defensible gaps, if supported: acclimatisation to elevated alkalinity as OAE scales up (Jones p12), and benthic habitat effects in shallow, well-mixed coastal waters (Jones p12)."
+        source: [jones2025-p12]
+    caveats:
+      - "The question asks the answerer to reason about gaps, so the exact three bottlenecks may differ. Grade on whether each proposed gap is supported by the cited paper. The three above are the most direct."
+
+  - id: B2-he-tyka-equilibration-ratios
+    tier: bias-check
+    expected_favour: rag
+    domains: [climate-science]
+    papers: [he2023]
+    text: |
+      In He & Tyka (2023), what is the specific range of mol DIC
+      uptake per mol NaOH added that the paper reports for near-coast
+      alkalinity enhancement? Cite the exact numbers and any conditions
+      attached.
+    reference_key_points:
+      - point: "Most locations reach an uptake efficiency plateau of 0.6-0.8 mol CO2 per mol of alkalinity after 3-4 years, with only slow additional uptake afterwards."
+        source: [he2023-p1, he2023-p13]
+      - point: "The molar uptake fraction (delta DIC / delta Alk) after 1 year varied between 0.2 and 0.85. After 10 years most locations had 0.65-0.80."
+        source: [he2023-p9]
+      - point: "The theoretical maximum is about 0.8. Some locations equilibrate fast to near it, some plateau at 0.6-0.8, and some equilibrate slowly or lose alkalinity to the deep."
+        source: [he2023-p10]
+      - point: "In regions of deep water formation (for example the northern Atlantic) the ratio is just over 0.4, with about half the added alkalinity subducted deep."
+        source: [he2023-p10]
+    caveats:
+      - "The paper expresses uptake per mol of alkalinity added. NaOH is the idealised instantly dissolving alkalinity source (p4). Treat 0.6-0.8 as the headline answer, with the conditions (3-4 years, location-dependent)."
+
+  - id: B3-mia-attack-success-rate
+    tier: bias-check
+    expected_favour: rag
+    domains: [ai-ethics-law]
+    papers: [choquette2021]
+    text: |
+      What attack success rate (or AUROC) does Choquette-Choo et al.
+      (2021) report for label-only membership inference attacks on the
+      CIFAR-10 dataset? Quote the value and the attack variant.
+    reference_key_points:
+      - point: "The CIFAR-10 results are shown in Figure 1 (attack accuracy against number of training points, 100 to 10,000) and other figures. The text does not state one numeric CIFAR-10 accuracy or AUROC. A correct answer says so, or describes the figure qualitatively."
+        source: [choquette2021-p5]
+      - point: "Qualitatively, the label-only boundary-distance attack is at least on par with the confidence-vector attack, and combining it with the data-augmentation (translation) attack beats all other attacks. All attacks decrease as the training set grows."
+        source: [choquette2021-p4, choquette2021-p5]
+      - point: "The numeric tables in the paper are for CIFAR-100 (30,000 training points: gap 83.5, confidence-vector 88.1, data augmentation 84.6, boundary distance 88.0, combined 89.2) and MNIST (combined 58.7). These are not CIFAR-10 numbers."
+        source: [choquette2021-p5]
+    caveats:
+      - "Trap question. The paper has no quoted CIFAR-10 value. An answer that presents the CIFAR-100 numbers (88.0, 89.2) as CIFAR-10 results is wrong. An answer that says the text gives no single value, and points to Figure 1, is correct."

@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.pdf
+data/raw/
+data/md/
+data/chroma/
+runs/
+rag2compare/
+.DS_Store
+wiki/bundle/

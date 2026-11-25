@@ -20,7 +20,7 @@ Full spec: `IMPLEMENTATION_PLAN.md`. Read it before any work.
 - Frozen 2026-11-25 (git tag `frozen`). From here, changes to RAG or the shared prompts go in `NOTES.md` with date and reason.
 - Full runs done (`scripts/full_runs.py`): 28/28 answers in `runs/answers/`, no errors, no log gaps. Judge packets exported (`scripts/export_judge.py` -> `runs/judge_packets.jsonl`, key in `runs/answer_key.csv`; do not re-run without `--force`, ids are tied to scores).
 - Judged 2026-11-25 by Claude in-session (blind) -> `runs/scores.jsonl`, notes in `runs/judge_notes.jsonl`. Hand spot-check skipped by Abdullah, disclosed in `NOTES.md`. `scripts/import_scores.py` + `scripts/report.py` written, tested (`tests/test_report.py`); `runs/report.md` generated. Result summary and viva notes: `RESULTS_NOTES.md`.
-- Next: Phase 7 demo (update demo on a copy of the bundle at commit `8c739e8`, before nagwekar2025). Write-up is notes only (`RESULTS_NOTES.md`), no formal report.
+- Phase 7 live demo dropped (Abdullah, 2026-11-25). Instructor session: walk through the codebase, the wiki bundle, the results (`runs/report.md`, `RESULTS_NOTES.md`) and how a wiki differs from RAG in general. Write-up is notes only, no formal report. Nothing open.
 - Known blinding tells, disclosed in NOTES.md: wiki answers longer, some LaTeX, RAG declines more.
 - Bundle repo (`wiki/bundle/`, own git, gitignored here) tag `ethics-v1-dup` holds the pre-slug-fix state. Scripts in `scripts/` (overnight run, pilot, smoke test, status).
 - All plan section 4 decisions settled. None open.

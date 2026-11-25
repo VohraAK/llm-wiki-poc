@@ -94,3 +94,7 @@
 - Decline policy: `declined=true` when the answer says the corpus does not cover something that it does cover, with no real attempt at the comparison. Declines are labelled wrong. Mixed cases (see below) were labelled by content and `declined=false`. B3 is a trap question whose correct answer is "no single CIFAR-10 value", so those answers are correct and not declines.
 - Sensitivity: 4 wiki answers (T3 s1, T2-fair-use s1, T1 s1 and s2) are partial but say "the text does not contain/state" the link between the papers, while giving accurate per-paper content. Counted as declines they would move wiki from 9 partial / 1 wrong to 5 partial / 5 wrong. RAG's 12 declines are plain refusals (retrieval missed papers), so RAG's result does not depend on this call.
 - Judge style notes: strict on quotes or numbers not found on the cited page (marked unsupported), and on answers that assert a paper is absent from the corpus when it is present.
+
+## 2026-11-25 Phase 7 demo dropped
+- Abdullah decided not to give a live demo (live ingest, Obsidian graph, side-by-side query, update demo with lint). The instructor session shows the codebase, the wiki bundle, the results and a general RAG vs wiki comparison instead (`RESULTS_NOTES.md`).
+- Consequence: the update and lint behaviour of the wiki (diff on re-ingest, orphan and contradiction checks) is not demonstrated or measured. `wiki/lint.py` and `wiki/validate.py` exist, but the update scenario at bundle commit `8c739e8` was not run. Say so if asked.
